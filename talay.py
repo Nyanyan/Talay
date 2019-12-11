@@ -1,6 +1,7 @@
 import serial
 import serial.tools.list_ports
 import os
+import tkinter
 
 def search_com_port():
     coms = serial.tools.list_ports.comports()
@@ -14,6 +15,17 @@ def search_com_port():
 
 port = search_com_port()
 
+
+root = tkinter.Tk()
+root.title("Talay1.0")
+root.geometry("500x900")
+canvas = tkinter.Canvas(root, width = 500, height = 900)
+canvas.place(x=0,y=0)
+
+namelabel = tkinter.Label(root, text='Name')
+namelabel.pack()
+namebox = tkinter.Entry(width=50)
+namebox.pack()
 
 num = 0
 while True:
@@ -29,7 +41,7 @@ while True:
     if line != '':
         print(line)
         f = True
-        arr = ['0','1','2','3','4','5','6','7','8','9']
+        arr = ['0','1']
         if line[0] in arr:
             if len(line) == 10:
                 checksum = 64
