@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 SoftwareSerial serial0(3, 2); // RX, TX
-SoftwareSerial serial1(4, 2); // RX, TX
+//SoftwareSerial serial1(4, 2); // RX, TX
 /*
 SoftwareSerial serial2(5, 2); // RX, TX
 SoftwareSerial serial3(6, 2); // RX, TX
@@ -17,7 +17,7 @@ bool flag[numoftimer];
 void setup() {
   Serial.begin(9600);
   serial0.begin(1200);
-  serial1.begin(1200);
+  //serial1.begin(1200);
   /*
   serial2.begin(1200);
   serial3.begin(1200);
@@ -35,8 +35,8 @@ void setup() {
 void loop() {
   serial0.listen();
   mainprocessing(0, serial0.readStringUntil(char(10)));
-  serial1.listen();
-  mainprocessing(1, serial1.readStringUntil(char(10)));
+  //serial1.listen();
+  //mainprocessing(1, serial1.readStringUntil(char(10)));
   /*
   serial2.listen();
   mainprocessing(2, serial2.readStringUntil(char(10)));
@@ -70,24 +70,16 @@ void mainprocessing(int num, String input) {
         Serial.print(char(48 + num));
         Serial.print(char(48 + i));
         Serial.println(input);
+        delay(10);
         if (Serial.available() > 0) {
           if (char(Serial.read()) == 'y')
             break;
         }
-        delay(100);
       }
     }
-  } else if (input[0] != 'S')
+  } else if (input[0] == ' ' || input[0] == 'I' || input[0] == 'R' || input[0] == 'L' || input[0] == 'A')
     flag[num] = true;
 
-  if (f) {
-    for (int i = 0; i < 10; i++) {
-      Serial.println(num);
-      if (Serial.available() > 0) {
-        if (char(Serial.read()) == 'y')
-          break;
-      }
-      delay(100);
-    }
-  }
+  if (f)
+    Serial.println(num);
 }
