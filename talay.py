@@ -2,6 +2,7 @@ import serial
 import serial.tools.list_ports
 import os
 import tkinter
+import openpyxl
 
 def search_com_port():
     coms = serial.tools.list_ports.comports()
@@ -13,8 +14,20 @@ def search_com_port():
     print('Use COM port: ' + use_port)
     return use_port
 
+def write_list(data, sheet, start_row, column):
+    for i in range(len(data)):
+        sheet.cell(row=start_row+i, column=column, value=data[i])
+
+def nameinput():
+    
+
 port = search_com_port()
 
+wb = openpyxl.load_workbook('test.xlsx')
+sheet = wb['sheet1']
+#最終列を取得
+maxcol = sheet.max_column
+print(maxcol)
 
 root = tkinter.Tk()
 root.title("Talay1.0")
@@ -26,6 +39,8 @@ namelabel = tkinter.Label(root, text='Name')
 namelabel.pack()
 namebox = tkinter.Entry(width=50)
 namebox.pack()
+nameentbutton = tkinter.Button(root, text='Confirm', command=nameinput)
+nameentbutton.pack()
 
 num = 0
 while True:
