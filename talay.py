@@ -19,7 +19,10 @@ def nameinput(n):
     row = maxrow + 1
     if n == 1:
         row += 1
-    name = namebox.get()
+    if n == 0:
+        name = name0box.get()
+    elif n == 1:
+        name = name1box.get()
     sheet.cell(row=row, column=1, value=name)
     if n == 0:
         name0box.config(state = 'disable')
@@ -93,7 +96,48 @@ def confirmtime():
     t51box.insert(tkinter.END,time[1][4])
 
 def nextperson():
-    print('a')
+    global maxrow, time, turn
+    maxrow = sheet.max_row
+
+    name0box.config(state='normal')
+    name1box.config(state='normal')
+
+    t10box.config(state='normal')
+    t10entbutton.config(state='normal')
+    t20box.config(state='normal')
+    t20entbutton.config(state='normal')
+    t30box.config(state='normal')
+    t30entbutton.config(state='normal')
+    t40box.config(state='normal')
+    t40entbutton.config(state='normal')
+    t50box.config(state='normal')
+    t50entbutton.config(state='normal')
+    t11box.config(state='normal')
+    t11entbutton.config(state='normal')
+    t21box.config(state='normal')
+    t21entbutton.config(state='normal')
+    t31box.config(state='normal')
+    t31entbutton.config(state='normal')
+    t41box.config(state='normal')
+    t41entbutton.config(state='normal')
+    t51box.config(state='normal')
+    t51entbutton.config(state='normal')
+    name0box.delete(0, tkinter.END)
+    t10box.delete(0, tkinter.END)
+    t20box.delete(0, tkinter.END)
+    t30box.delete(0, tkinter.END)
+    t40box.delete(0, tkinter.END)
+    t50box.delete(0, tkinter.END)
+    name1box.delete(0, tkinter.END)
+    t11box.delete(0, tkinter.END)
+    t21box.delete(0, tkinter.END)
+    t31box.delete(0, tkinter.END)
+    t41box.delete(0, tkinter.END)
+    t51box.delete(0, tkinter.END)
+    for i in range(2):
+        for j in range(5):
+            time[i].append('')
+    turn = [0, 0]
 
 def inputserial():
     global time, turn
@@ -144,8 +188,8 @@ port = search_com_port()
 
 wb = openpyxl.load_workbook('test.xlsx')
 sheet = wb['Sheet1']
-maxcol = sheet.max_column
 maxrow = sheet.max_row
+print(maxrow)
 
 time = []
 for i in range(2):

@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 SoftwareSerial serial0(3, 2); // RX, TX
-//SoftwareSerial serial1(4, 2); // RX, TX
+SoftwareSerial serial1(4, 2); // RX, TX
 /*
 SoftwareSerial serial2(5, 2); // RX, TX
 SoftwareSerial serial3(6, 2); // RX, TX
@@ -17,7 +17,7 @@ bool flag[numoftimer];
 void setup() {
   Serial.begin(9600);
   serial0.begin(1200);
-  //serial1.begin(1200);
+  serial1.begin(1200);
   /*
   serial2.begin(1200);
   serial3.begin(1200);
@@ -35,8 +35,8 @@ void setup() {
 void loop() {
   serial0.listen();
   mainprocessing(0, serial0.readStringUntil(char(10)));
-  //serial1.listen();
-  //mainprocessing(1, serial1.readStringUntil(char(10)));
+  serial1.listen();
+  mainprocessing(1, serial1.readStringUntil(char(10)));
   /*
   serial2.listen();
   mainprocessing(2, serial2.readStringUntil(char(10)));
