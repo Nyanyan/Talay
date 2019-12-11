@@ -27,7 +27,7 @@ def nameinput(n):
     if n == 0:
         name0box.config(state = 'disable')
         name0entbutton.config(state = 'disable')
-    elif n == 0:
+    elif n == 1:
         name1box.config(state = 'disable')
         name1entbutton.config(state = 'disable')
 
@@ -36,41 +36,50 @@ def timeinput(turn, n):
     row = maxrow + 1
     if n == 1:
         row += 1
-    sheet.cell(row=row, column=turn + 2, value=time[n][turn])
-    wb.save('test.xlsx')
     if n == 0:
         if turn == 0:
             t10box.config(state='disable')
             t10entbutton.config(state='disable')
+            time[n][turn] = t10box.get()
         if turn == 1:
             t20box.config(state='disable')
             t20entbutton.config(state='disable')
+            time[n][turn] = t20box.get()
         if turn == 2:
             t30box.config(state='disable')
             t30entbutton.config(state='disable')
+            time[n][turn] = t30box.get()
         if turn == 3:
             t40box.config(state='disable')
             t40entbutton.config(state='disable')
+            time[n][turn] = t40box.get()
         if turn == 4:
             t50box.config(state='disable')
             t50entbutton.config(state='disable')
+            time[n][turn] = t50box.get()
     elif n == 1:
         if turn == 0:
             t11box.config(state='disable')
             t11entbutton.config(state='disable')
+            time[n][turn] = t11box.get()
         if turn == 1:
             t21box.config(state='disable')
             t21entbutton.config(state='disable')
+            time[n][turn] = t21box.get()
         if turn == 2:
             t31box.config(state='disable')
             t31entbutton.config(state='disable')
+            time[n][turn] = t31box.get()
         if turn == 3:
             t41box.config(state='disable')
             t41entbutton.config(state='disable')
+            time[n][turn] = t41box.get()
         if turn == 4:
             t51box.config(state='disable')
             t51entbutton.config(state='disable')
-    print('done')
+            time[n][turn] = t51box.get()
+    sheet.cell(row=row, column=turn + 2, value=time[n][turn])
+    wb.save('test.xlsx')
 
 
 def confirmtime():
@@ -101,6 +110,8 @@ def nextperson():
 
     name0box.config(state='normal')
     name1box.config(state='normal')
+    name0entbutton.config(state='normal')
+    name1entbutton.config(state='normal')
 
     t10box.config(state='normal')
     t10entbutton.config(state='normal')
@@ -170,7 +181,7 @@ def inputserial():
                     second = int(line[4]) * 10 + int(line[5])
                     msecond = int(line[6]) * 100 + int(line[7]) * 10 + int(line[8])
                     #print(num,minute,second,msecond)
-                    time[int(line[0])][turn[int(line[0])]] = str(minute * 60 + second) + '.' + str(msecond) #str(minute) + ':' + str(second) + '.' + str(msecond)
+                    time[int(line[0])][turn[int(line[0])]] = minute * 60 + second + msecond / 1000 #str(minute) + ':' + str(second) + '.' + str(msecond)
                     print(time[int(line[0])][turn[int(line[0])]])
                     turn[int(line[0])] += 1
                     confirmtime()
