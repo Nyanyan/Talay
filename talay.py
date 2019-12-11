@@ -21,8 +21,12 @@ def nameinput(n):
         row += 1
     name = namebox.get()
     sheet.cell(row=row, column=1, value=name)
-    namebox.config(state = 'disable')
-    nameentbutton.config(state = 'disable')
+    if n == 0:
+        name0box.config(state = 'disable')
+        name0entbutton.config(state = 'disable')
+    elif n == 0:
+        name1box.config(state = 'disable')
+        name1entbutton.config(state = 'disable')
 
 def timeinput(turn, n):
     global maxrow
@@ -47,6 +51,22 @@ def timeinput(turn, n):
         if turn == 4:
             t50box.config(state='disable')
             t50entbutton.config(state='disable')
+    elif n == 1:
+        if turn == 0:
+            t11box.config(state='disable')
+            t11entbutton.config(state='disable')
+        if turn == 1:
+            t21box.config(state='disable')
+            t21entbutton.config(state='disable')
+        if turn == 2:
+            t31box.config(state='disable')
+            t31entbutton.config(state='disable')
+        if turn == 3:
+            t41box.config(state='disable')
+            t41entbutton.config(state='disable')
+        if turn == 4:
+            t51box.config(state='disable')
+            t51entbutton.config(state='disable')
     print('done')
 
 
@@ -61,6 +81,19 @@ def confirmtime():
     t40box.insert(tkinter.END,time[0][3])
     t50box.delete(0, tkinter.END)
     t50box.insert(tkinter.END,time[0][4])
+    t11box.delete(0, tkinter.END)
+    t11box.insert(tkinter.END,time[1][0])
+    t21box.delete(0, tkinter.END)
+    t21box.insert(tkinter.END,time[1][1])
+    t31box.delete(0, tkinter.END)
+    t31box.insert(tkinter.END,time[1][2])
+    t41box.delete(0, tkinter.END)
+    t41box.insert(tkinter.END,time[1][3])
+    t51box.delete(0, tkinter.END)
+    t51box.insert(tkinter.END,time[1][4])
+
+def nextperson():
+    print('a')
 
 def inputserial():
     global time, turn
@@ -123,16 +156,16 @@ turn = [0, 0]
 
 root = tkinter.Tk()
 root.title("Talay1.0")
-root.geometry("500x900")
-canvas = tkinter.Canvas(root, width = 500, height = 900)
+root.geometry("900x500")
+canvas = tkinter.Canvas(root, width = 900, height = 500)
 canvas.place(x=0,y=0)
 
-namelabel = tkinter.Label(root, text='Name')
-namelabel.grid(row=0, column=0, padx=5, pady=5)
-namebox = tkinter.Entry(width=50)
-namebox.grid(row=0, column=1, padx=5, pady=5)
-nameentbutton = tkinter.Button(root, text='Confirm', command=lambda :nameinput(0))
-nameentbutton.grid(row=0, column=2, padx=5, pady=5)
+name0label = tkinter.Label(root, text='Name')
+name0label.grid(row=0, column=0, padx=5, pady=5)
+name0box = tkinter.Entry(width=50)
+name0box.grid(row=0, column=1, padx=5, pady=5)
+name0entbutton = tkinter.Button(root, text='Confirm', command=lambda :nameinput(0))
+name0entbutton.grid(row=0, column=2, padx=5, pady=5)
 
 t10label = tkinter.Label(root, text='T1')
 t10label.grid(row=1, column=0, padx=5, pady=5)
@@ -168,6 +201,51 @@ t50box = tkinter.Entry(width=50)
 t50box.grid(row=5, column=1, padx=5, pady=5)
 t50entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(4, 0))
 t50entbutton.grid(row=5, column=2, padx=5, pady=5)
+
+name1label = tkinter.Label(root, text='Name')
+name1label.grid(row=0, column=3, padx=5, pady=5)
+name1box = tkinter.Entry(width=50)
+name1box.grid(row=0, column=4, padx=5, pady=5)
+name1entbutton = tkinter.Button(root, text='Confirm', command=lambda :nameinput(1))
+name1entbutton.grid(row=0, column=5, padx=5, pady=5)
+
+t11label = tkinter.Label(root, text='T1')
+t11label.grid(row=1, column=3, padx=5, pady=5)
+t11box = tkinter.Entry(width=50)
+t11box.grid(row=1, column=4, padx=5, pady=5)
+t11entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(0, 1))
+t11entbutton.grid(row=1, column=5, padx=5, pady=5)
+
+t21label = tkinter.Label(root, text='T2')
+t21label.grid(row=2, column=3, padx=5, pady=5)
+t21box = tkinter.Entry(width=50)
+t21box.grid(row=2, column=4, padx=5, pady=5)
+t21entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(1, 1))
+t21entbutton.grid(row=2, column=5, padx=5, pady=5)
+
+t31label = tkinter.Label(root, text='T3')
+t31label.grid(row=3, column=3, padx=5, pady=5)
+t31box = tkinter.Entry(width=50)
+t31box.grid(row=3, column=4, padx=5, pady=5)
+t31entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(2, 1))
+t31entbutton.grid(row=3, column=5, padx=5, pady=5)
+
+t41label = tkinter.Label(root, text='T4')
+t41label.grid(row=4, column=3, padx=5, pady=5)
+t41box = tkinter.Entry(width=50)
+t41box.grid(row=4, column=4, padx=5, pady=5)
+t41entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(3, 1))
+t41entbutton.grid(row=4, column=5, padx=5, pady=5)
+
+t51label = tkinter.Label(root, text='T5')
+t51label.grid(row=5, column=3, padx=5, pady=5)
+t51box = tkinter.Entry(width=50)
+t51box.grid(row=5, column=4, padx=5, pady=5)
+t51entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(4, 1))
+t51entbutton.grid(row=5, column=5, padx=5, pady=5)
+
+resetbutton = tkinter.Button(root, text='Next Person', command=nextperson)
+resetbutton.grid(row=6, column=0, columnspan=6, sticky=tkinter.W+tkinter.E)
 
 root.after(1,inputserial)
 root.mainloop()
