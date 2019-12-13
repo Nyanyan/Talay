@@ -33,9 +33,7 @@ def nameinput(n):
 
 def timeinput(turn, n):
     global maxrow
-    row = maxrow + 1
-    if n == 1:
-        row += 1
+    row = maxrow + 1 + n
     if n == 0:
         if turn == 0:
             t10box.config(state='disable')
@@ -79,7 +77,7 @@ def timeinput(turn, n):
             t51entbutton.config(state='disable')
             time[n][turn] = t51box.get()
     sheet.cell(row=row, column=turn + 2, value=time[n][turn])
-    wb.save('test.xlsx')
+    wb.save(workbook)
 
 
 def confirmtime():
@@ -106,7 +104,29 @@ def confirmtime():
 
 def nextperson():
     global maxrow, time, turn
-    maxrow = sheet.max_row
+
+    time[0][0] = t10box.get()
+    time[0][1] = t20box.get()
+    time[0][2] = t30box.get()
+    time[0][3] = t40box.get()
+    time[0][4] = t50box.get()
+    time[1][0] = t11box.get()
+    time[1][1] = t21box.get()
+    time[1][2] = t31box.get()
+    time[1][3] = t41box.get()
+    time[1][4] = t51box.get()
+
+    for i in range(2):
+        row = maxrow + 1 + i
+        for j in range(5):
+            sheet.cell(row=row, column=j + 2, value=time[i][j])
+
+    name0 = name0box.get()
+    name1 = name1box.get()
+    sheet.cell(row=maxrow + 1, column=1, value=name0)
+    sheet.cell(row=maxrow + 2, column=1, value=name1)
+
+    wb.save(workbook)
 
     name0box.config(state='normal')
     name1box.config(state='normal')
@@ -133,6 +153,7 @@ def nextperson():
     t41entbutton.config(state='normal')
     t51box.config(state='normal')
     t51entbutton.config(state='normal')
+
     name0box.delete(0, tkinter.END)
     t10box.delete(0, tkinter.END)
     t20box.delete(0, tkinter.END)
@@ -145,23 +166,51 @@ def nextperson():
     t31box.delete(0, tkinter.END)
     t41box.delete(0, tkinter.END)
     t51box.delete(0, tkinter.END)
+
     for i in range(2):
         for j in range(5):
             time[i].append('')
     turn = [0, 0]
 
+    maxrow = sheet.max_row
+
+def turncount():
+    global turn
+    if t10box.get() == '':
+        turn[0] = 0
+    elif t20box.get() == '':
+        turn[0] = 1
+    elif t30box.get() == '':
+        turn[0] = 2
+    elif t40box.get() == '':
+        turn[0] = 3
+    elif t50box.get() == '':
+        turn[0] = 4
+
+    if t11box.get() == '':
+        turn[1] = 0
+    elif t21box.get() == '':
+        turn[1] = 1
+    elif t31box.get() == '':
+        turn[1] = 2
+    elif t41box.get() == '':
+        turn[1] = 3
+    elif t51box.get() == '':
+        turn[1] = 4
+
 def inputserial():
     global time, turn
+    turncount()
     ser = serial.Serial()
     ser.port = port
     ser.baundrate = 9600
     ser.timeout = 0.1 #sec
     ser.setDTR(False)
     ser.open()
-
+    #print(turn)
     line = ser.readline().decode('utf8', 'ignore').rstrip(os.linesep)
     if line != '':
-        #print(line)
+        print(line)
         f = False
         arr = ['0','1']
         if line[0] in arr:
@@ -183,7 +232,6 @@ def inputserial():
                     #print(num,minute,second,msecond)
                     time[int(line[0])][turn[int(line[0])]] = minute * 60 + second + msecond / 1000 #str(minute) + ':' + str(second) + '.' + str(msecond)
                     print(time[int(line[0])][turn[int(line[0])]])
-                    turn[int(line[0])] += 1
                     confirmtime()
                     f = True
                 else:
@@ -195,9 +243,11 @@ def inputserial():
     ser.close()
     root.after(1,inputserial)
 
+
 port = search_com_port()
 
-wb = openpyxl.load_workbook('test.xlsx')
+workbook = 'test.xlsx'
+wb = openpyxl.load_workbook(workbook)
 sheet = wb['Sheet1']
 maxrow = sheet.max_row
 print(maxrow)

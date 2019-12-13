@@ -33,6 +33,7 @@ void setup() {
 }
 
 void loop() {
+  //Serial.println(digitalRead(3));
   serial0.listen();
   mainprocessing(0, serial0.readStringUntil(char(10)));
   serial1.listen();
@@ -58,13 +59,13 @@ void loop() {
 }
 
 void mainprocessing(int num, String input) {
-  bool f = true;
+  //bool f = true;
   if (input[0] == 'S' and flag[num]) {
     int checksum = 64;
     for (int i = 0; i < 6; i++)
       checksum += int(input[i + 1]) - 48;
     if (char(checksum) == input[7]) {
-      f = false;
+      //f = false;
       flag[num] = false;
       for (int i = 0; i < 10; i++) {
         Serial.print(char(48 + num));
@@ -79,7 +80,8 @@ void mainprocessing(int num, String input) {
     }
   } else if (input[0] == ' ' || input[0] == 'I' || input[0] == 'R' || input[0] == 'L' || input[0] == 'A')
     flag[num] = true;
-
+/*
   if (f)
     Serial.println(num);
+*/
 }
