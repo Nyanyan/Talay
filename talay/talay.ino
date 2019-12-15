@@ -71,12 +71,11 @@ void mainprocessing(int num, String input) {
         Serial.print(char(48 + num));
         Serial.print(char(48 + i));
         Serial.println(input);
-        delay(10);
+        delay(5);
         if (Serial.available() > 0) {
           if (char(Serial.read()) == 'y')
             break;
         }
-        delay(10);
       }
     }
   } else if (input[0] == ' ' || input[0] == 'I' || input[0] == 'R' || input[0] == 'L' || input[0] == 'A')

@@ -161,6 +161,14 @@ def nextperson(n):
 
     wb.save(workbook)
 
+    window = tkinter.Tk()
+    window.title("Average")
+    window.geometry("200x100")
+    windowlabel = tkinter.Label(window,text='Your average is' + str(average))
+    windowlabel.pack()
+    breakbutton = tkinter.Button(window, text='OK', command=window.destroy)
+    breakbutton.pack()
+
     if n == 0:
         name0box.config(state='normal')
         name0entbutton.config(state='normal')
@@ -235,6 +243,16 @@ def turncount():
 
 def inputserial():
     global time, turn
+    time[0][0] = t10box.get()
+    time[0][1] = t20box.get()
+    time[0][2] = t30box.get()
+    time[0][3] = t40box.get()
+    time[0][4] = t50box.get()
+    time[1][0] = t11box.get()
+    time[1][1] = t21box.get()
+    time[1][2] = t31box.get()
+    time[1][3] = t41box.get()
+    time[1][4] = t51box.get()
     turncount()
     ser = serial.Serial()
     ser.port = port
@@ -245,7 +263,7 @@ def inputserial():
     #print(turn)
     line = ser.readline().decode('utf8', 'ignore').rstrip(os.linesep)
     if line != '':
-        print(line)
+        #print(line)
         f = False
         arr = ['0','1']
         if line[0] in arr:
@@ -287,7 +305,7 @@ sheet = wb['Sheet1']
 maxrow = [0,-1]
 maxrow[0] = findmaxrow(0)
 maxrow[1] = findmaxrow(1)
-print(maxrow)
+#print(maxrow)
 
 time = []
 for i in range(2):
@@ -392,5 +410,5 @@ resetbutton0.grid(row=6, column=0, columnspan=3, sticky=tkinter.W+tkinter.E)
 resetbutton1 = tkinter.Button(root, text='Next Person', command=lambda :nextperson(0))
 resetbutton1.grid(row=6, column=3, columnspan=3, sticky=tkinter.W+tkinter.E)
 
-root.after(3,inputserial)
+root.after(1,inputserial)
 root.mainloop()
