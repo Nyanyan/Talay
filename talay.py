@@ -150,13 +150,25 @@ def nextperson(n):
         return 0
     
     tim = []
+    DNFcnt = 0
     for i in range(5):
-        tim.append(float(time[n][i]))
-    average = (sum(tim) - max(tim) - min(tim)) / 3
+        if str.isdigit(time[n][i]):
+            tim.append(float(time[n][i]))
+        else:
+            DNFcnt += 1
+    if DNFcnt == 0:
+        average = (sum(tim) - max(tim) - min(tim)) / 3
+    elif DNFcnt == 1:
+        average = (sum(tim) - min(tim)) / 3
+    else:
+        average = 'DNF'
 
     sheet.cell(row=maxrow[n] + 1, column=1, value=name)
     for i in range(5):
-        sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
+        if str.isdigit(time[n][i]):
+            sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
+        else:
+            sheet.cell(row=maxrow[n] + 1, column=i + 2, value=time[n][i])
     sheet.cell(row=maxrow[n] + 1, column=7, value=average)
 
     wb.save(workbook)
@@ -164,7 +176,7 @@ def nextperson(n):
     window = tkinter.Tk()
     window.title("Average")
     window.geometry("200x100")
-    windowlabel = tkinter.Label(window,text='Your average is' + str(average))
+    windowlabel = tkinter.Label(window,text='Your average is ' + str(average))
     windowlabel.pack()
     breakbutton = tkinter.Button(window, text='OK', command=window.destroy)
     breakbutton.pack()
