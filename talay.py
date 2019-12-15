@@ -14,26 +14,37 @@ def search_com_port():
     print('Use COM port: ' + use_port)
     return use_port
 
+def findmaxrow(n):
+    for i in range(1, sheet.max_row + 1):
+        if sheet.cell(row = i, column = 1).value == None and maxrow[1-n] != i - 1:
+            return i - 1
+
 def nameinput(n):
     global maxrow
-    row = maxrow + 1
-    if n == 1:
-        row += 1
+    row = 0
+    if n == 0:
+        row = maxrow[0]
+    else:
+        row = maxrow[1]
     if n == 0:
         name = name0box.get()
-    elif n == 1:
+    else:
         name = name1box.get()
     sheet.cell(row=row, column=1, value=name)
     if n == 0:
         name0box.config(state = 'disable')
         name0entbutton.config(state = 'disable')
-    elif n == 1:
+    else:
         name1box.config(state = 'disable')
         name1entbutton.config(state = 'disable')
 
 def timeinput(turn, n):
     global maxrow
-    row = maxrow + 1 + n
+    row = 0
+    if n == 0:
+        row = maxrow[0]
+    else:
+        row = maxrow[1]
     if n == 0:
         if turn == 0:
             t10box.config(state='disable')
@@ -102,7 +113,7 @@ def confirmtime():
     t51box.delete(0, tkinter.END)
     t51box.insert(tkinter.END,time[1][4])
 
-def nextperson():
+def nextperson0():
     global maxrow, time, turn
 
     time[0][0] = t10box.get()
@@ -110,28 +121,16 @@ def nextperson():
     time[0][2] = t30box.get()
     time[0][3] = t40box.get()
     time[0][4] = t50box.get()
-    time[1][0] = t11box.get()
-    time[1][1] = t21box.get()
-    time[1][2] = t31box.get()
-    time[1][3] = t41box.get()
-    time[1][4] = t51box.get()
-
-    for i in range(2):
-        row = maxrow + 1 + i
-        for j in range(5):
-            sheet.cell(row=row, column=j + 2, value=time[i][j])
+    for i in range(5):
+        sheet.cell(row=maxrow[0] + 1, column=i + 2, value=time[0][i])
 
     name0 = name0box.get()
-    name1 = name1box.get()
-    sheet.cell(row=maxrow + 1, column=1, value=name0)
-    sheet.cell(row=maxrow + 2, column=1, value=name1)
+    sheet.cell(row=maxrow[0] + 1, column=1, value=name0)
 
     wb.save(workbook)
 
     name0box.config(state='normal')
-    name1box.config(state='normal')
     name0entbutton.config(state='normal')
-    name1entbutton.config(state='normal')
 
     t10box.config(state='normal')
     t10entbutton.config(state='normal')
@@ -143,6 +142,40 @@ def nextperson():
     t40entbutton.config(state='normal')
     t50box.config(state='normal')
     t50entbutton.config(state='normal')
+
+    name0box.delete(0, tkinter.END)
+    t10box.delete(0, tkinter.END)
+    t20box.delete(0, tkinter.END)
+    t30box.delete(0, tkinter.END)
+    t40box.delete(0, tkinter.END)
+    t50box.delete(0, tkinter.END)
+
+    for i in range(5):
+        time[0][i] = ''
+    turn[0] = 0
+    maxrow[0] = findmaxrow(0)
+
+
+def nextperson1():
+    global maxrow, time, turn
+
+    time[1][0] = t11box.get()
+    time[1][1] = t21box.get()
+    time[1][2] = t31box.get()
+    time[1][3] = t41box.get()
+    time[1][4] = t51box.get()
+    row = maxrow[1]
+    for j in range(5):
+        sheet.cell(row=row, column=j + 2, value=time[1][j])
+
+    name1 = name1box.get()
+    sheet.cell(row=maxrow[1] + 1, column=1, value=name1)
+
+    wb.save(workbook)
+
+    name1box.config(state='normal')
+    name1entbutton.config(state='normal')
+
     t11box.config(state='normal')
     t11entbutton.config(state='normal')
     t21box.config(state='normal')
@@ -154,12 +187,6 @@ def nextperson():
     t51box.config(state='normal')
     t51entbutton.config(state='normal')
 
-    name0box.delete(0, tkinter.END)
-    t10box.delete(0, tkinter.END)
-    t20box.delete(0, tkinter.END)
-    t30box.delete(0, tkinter.END)
-    t40box.delete(0, tkinter.END)
-    t50box.delete(0, tkinter.END)
     name1box.delete(0, tkinter.END)
     t11box.delete(0, tkinter.END)
     t21box.delete(0, tkinter.END)
@@ -167,12 +194,11 @@ def nextperson():
     t41box.delete(0, tkinter.END)
     t51box.delete(0, tkinter.END)
 
-    for i in range(2):
-        for j in range(5):
-            time[i].append('')
-    turn = [0, 0]
+    for i in range(5):
+        time[1][i] = ''
+    turn[1] = 0
 
-    maxrow = sheet.max_row
+    maxrow[1] = findmaxrow(1)
 
 def turncount():
     global turn
@@ -249,7 +275,9 @@ port = search_com_port()
 workbook = 'test.xlsx'
 wb = openpyxl.load_workbook(workbook)
 sheet = wb['Sheet1']
-maxrow = sheet.max_row
+maxrow = [0,-1]
+maxrow[0] = findmaxrow(0)
+maxrow[1] = findmaxrow(1)
 print(maxrow)
 
 time = []
@@ -349,8 +377,11 @@ t51box.grid(row=5, column=4, padx=5, pady=5)
 t51entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(4, 1))
 t51entbutton.grid(row=5, column=5, padx=5, pady=5)
 
-resetbutton = tkinter.Button(root, text='Next Person', command=nextperson)
-resetbutton.grid(row=6, column=0, columnspan=6, sticky=tkinter.W+tkinter.E)
+resetbutton0 = tkinter.Button(root, text='Next Person', command=nextperson0)
+resetbutton0.grid(row=6, column=0, columnspan=3, sticky=tkinter.W+tkinter.E)
+
+resetbutton1 = tkinter.Button(root, text='Next Person', command=nextperson1)
+resetbutton1.grid(row=6, column=3, columnspan=3, sticky=tkinter.W+tkinter.E)
 
 root.after(1,inputserial)
 root.mainloop()
