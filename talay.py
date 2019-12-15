@@ -113,92 +113,101 @@ def confirmtime():
     t51box.delete(0, tkinter.END)
     t51box.insert(tkinter.END,time[1][4])
 
-def nextperson0():
+def nextperson(n):
     global maxrow, time, turn
 
-    time[0][0] = t10box.get()
-    time[0][1] = t20box.get()
-    time[0][2] = t30box.get()
-    time[0][3] = t40box.get()
-    time[0][4] = t50box.get()
-    for i in range(5):
-        sheet.cell(row=maxrow[0] + 1, column=i + 2, value=time[0][i])
+    if n == 0:
+        time[0][0] = t10box.get()
+        time[0][1] = t20box.get()
+        time[0][2] = t30box.get()
+        time[0][3] = t40box.get()
+        time[0][4] = t50box.get()
+        name = name0box.get()
+    else:
+        time[1][0] = t11box.get()
+        time[1][1] = t21box.get()
+        time[1][2] = t31box.get()
+        time[1][3] = t41box.get()
+        time[1][4] = t51box.get()
+        name = name1box.get()
 
-    name0 = name0box.get()
-    sheet.cell(row=maxrow[0] + 1, column=1, value=name0)
+    flag = False
+    if name == '':
+        flag = True
+    else:
+        for i in range(5):
+            if time[n][i] == '':
+                flag = True
+                break
+    if flag:
+        warning = tkinter.Tk()
+        warning.title("Warning")
+        warning.geometry("200x100")
+        warninglabel = tkinter.Label(warning,text='Input Name or Time')
+        warninglabel.pack()
+        breakbutton = tkinter.Button(warning, text='OK', command=warning.destroy)
+        breakbutton.pack()
+        return 0
+    
+    tim = []
+    for i in range(5):
+        tim.append(float(time[n][i]))
+    average = (sum(tim) - max(tim) - min(tim)) / 3
+
+    sheet.cell(row=maxrow[n] + 1, column=1, value=name)
+    for i in range(5):
+        sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
+    sheet.cell(row=maxrow[n] + 1, column=7, value=average)
 
     wb.save(workbook)
 
-    name0box.config(state='normal')
-    name0entbutton.config(state='normal')
+    if n == 0:
+        name0box.config(state='normal')
+        name0entbutton.config(state='normal')
 
-    t10box.config(state='normal')
-    t10entbutton.config(state='normal')
-    t20box.config(state='normal')
-    t20entbutton.config(state='normal')
-    t30box.config(state='normal')
-    t30entbutton.config(state='normal')
-    t40box.config(state='normal')
-    t40entbutton.config(state='normal')
-    t50box.config(state='normal')
-    t50entbutton.config(state='normal')
+        t10box.config(state='normal')
+        t10entbutton.config(state='normal')
+        t20box.config(state='normal')
+        t20entbutton.config(state='normal')
+        t30box.config(state='normal')
+        t30entbutton.config(state='normal')
+        t40box.config(state='normal')
+        t40entbutton.config(state='normal')
+        t50box.config(state='normal')
+        t50entbutton.config(state='normal')
 
-    name0box.delete(0, tkinter.END)
-    t10box.delete(0, tkinter.END)
-    t20box.delete(0, tkinter.END)
-    t30box.delete(0, tkinter.END)
-    t40box.delete(0, tkinter.END)
-    t50box.delete(0, tkinter.END)
+        name0box.delete(0, tkinter.END)
+        t10box.delete(0, tkinter.END)
+        t20box.delete(0, tkinter.END)
+        t30box.delete(0, tkinter.END)
+        t40box.delete(0, tkinter.END)
+        t50box.delete(0, tkinter.END)
+    else:
+        name1box.config(state='normal')
+        name1entbutton.config(state='normal')
 
-    for i in range(5):
-        time[0][i] = ''
-    turn[0] = 0
-    maxrow[0] = findmaxrow(0)
+        t11box.config(state='normal')
+        t11entbutton.config(state='normal')
+        t21box.config(state='normal')
+        t21entbutton.config(state='normal')
+        t31box.config(state='normal')
+        t31entbutton.config(state='normal')
+        t41box.config(state='normal')
+        t41entbutton.config(state='normal')
+        t51box.config(state='normal')
+        t51entbutton.config(state='normal')
 
-
-def nextperson1():
-    global maxrow, time, turn
-
-    time[1][0] = t11box.get()
-    time[1][1] = t21box.get()
-    time[1][2] = t31box.get()
-    time[1][3] = t41box.get()
-    time[1][4] = t51box.get()
-    row = maxrow[1]
-    for j in range(5):
-        sheet.cell(row=row, column=j + 2, value=time[1][j])
-
-    name1 = name1box.get()
-    sheet.cell(row=maxrow[1] + 1, column=1, value=name1)
-
-    wb.save(workbook)
-
-    name1box.config(state='normal')
-    name1entbutton.config(state='normal')
-
-    t11box.config(state='normal')
-    t11entbutton.config(state='normal')
-    t21box.config(state='normal')
-    t21entbutton.config(state='normal')
-    t31box.config(state='normal')
-    t31entbutton.config(state='normal')
-    t41box.config(state='normal')
-    t41entbutton.config(state='normal')
-    t51box.config(state='normal')
-    t51entbutton.config(state='normal')
-
-    name1box.delete(0, tkinter.END)
-    t11box.delete(0, tkinter.END)
-    t21box.delete(0, tkinter.END)
-    t31box.delete(0, tkinter.END)
-    t41box.delete(0, tkinter.END)
-    t51box.delete(0, tkinter.END)
+        name1box.delete(0, tkinter.END)
+        t11box.delete(0, tkinter.END)
+        t21box.delete(0, tkinter.END)
+        t31box.delete(0, tkinter.END)
+        t41box.delete(0, tkinter.END)
+        t51box.delete(0, tkinter.END)
 
     for i in range(5):
-        time[1][i] = ''
-    turn[1] = 0
-
-    maxrow[1] = findmaxrow(1)
+        time[n][i] = ''
+    turn[n] = 0
+    maxrow[n] = findmaxrow(n)
 
 def turncount():
     global turn
@@ -377,11 +386,11 @@ t51box.grid(row=5, column=4, padx=5, pady=5)
 t51entbutton = tkinter.Button(root, text='Confirm', command=lambda :timeinput(4, 1))
 t51entbutton.grid(row=5, column=5, padx=5, pady=5)
 
-resetbutton0 = tkinter.Button(root, text='Next Person', command=nextperson0)
+resetbutton0 = tkinter.Button(root, text='Next Person', command=lambda :nextperson(0))
 resetbutton0.grid(row=6, column=0, columnspan=3, sticky=tkinter.W+tkinter.E)
 
-resetbutton1 = tkinter.Button(root, text='Next Person', command=nextperson1)
+resetbutton1 = tkinter.Button(root, text='Next Person', command=lambda :nextperson(0))
 resetbutton1.grid(row=6, column=3, columnspan=3, sticky=tkinter.W+tkinter.E)
 
-root.after(1,inputserial)
+root.after(3,inputserial)
 root.mainloop()
