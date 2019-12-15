@@ -19,6 +19,14 @@ def findmaxrow(n):
         if sheet.cell(row = i, column = 1).value == None and maxrow[1-n] != i - 1:
             return i - 1
 
+def isNum(string):
+    arr = ['0','1','2','3','4','5','6','7','8','9','.']
+    ans = True
+    for i in range(len(string)):
+        if not(string[i] in arr):
+            ans = False
+    return ans
+
 def nameinput(n):
     global maxrow
     row = 0
@@ -152,20 +160,20 @@ def nextperson(n):
     tim = []
     DNFcnt = 0
     for i in range(5):
-        if str.isdigit(time[n][i]):
+        if isNum(time[n][i]):
             tim.append(float(time[n][i]))
         else:
             DNFcnt += 1
     if DNFcnt == 0:
-        average = (sum(tim) - max(tim) - min(tim)) / 3
+        average = round((sum(tim) - max(tim) - min(tim)) / 3, 3)
     elif DNFcnt == 1:
-        average = (sum(tim) - min(tim)) / 3
+        average = round((sum(tim) - min(tim)) / 3, 3)
     else:
         average = 'DNF'
 
     sheet.cell(row=maxrow[n] + 1, column=1, value=name)
     for i in range(5):
-        if str.isdigit(time[n][i]):
+        if isNum(time[n][i]):
             sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
         else:
             sheet.cell(row=maxrow[n] + 1, column=i + 2, value=time[n][i])
@@ -295,7 +303,7 @@ def inputserial():
                     second = int(line[4]) * 10 + int(line[5])
                     msecond = int(line[6]) * 100 + int(line[7]) * 10 + int(line[8])
                     #print(num,minute,second,msecond)
-                    time[int(line[0])][turn[int(line[0])]] = minute * 60 + second + msecond / 1000 #str(minute) + ':' + str(second) + '.' + str(msecond)
+                    time[int(line[0])][turn[int(line[0])]] = round(minute * 60 + second + msecond / 1000, 3) #str(minute) + ':' + str(second) + '.' + str(msecond)
                     print(time[int(line[0])][turn[int(line[0])]])
                     confirmtime()
                     f = True
@@ -314,7 +322,7 @@ port = search_com_port()
 workbook = 'test.xlsx'
 wb = openpyxl.load_workbook(workbook)
 sheet = wb['Sheet1']
-maxrow = [0,-1]
+maxrow = [-1,-1]
 maxrow[0] = findmaxrow(0)
 maxrow[1] = findmaxrow(1)
 #print(maxrow)
