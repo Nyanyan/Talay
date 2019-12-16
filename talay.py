@@ -93,7 +93,10 @@ def timeinput(turn, n):
             t51box.config(state='disable')
             t51entbutton.config(state='disable')
             time[n][turn] = t51box.get()
-    sheet.cell(row=row, column=turn + 2, value=time[n][turn])
+    val = time[n][turn]
+    if isNum(val):
+        val = float(val)
+    sheet.cell(row=row, column=turn + 2, value=val)
     wb.save(workbook)
 
 
