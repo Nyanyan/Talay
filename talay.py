@@ -16,7 +16,7 @@ def search_com_port():
 
 def findmaxrow(n):
     global maxrow
-    for i in range(maxrow[n], sheet.max_row + 1):
+    for i in range(max(1, maxrow[n]), sheet.max_row + 1):
         if sheet.cell(row = i, column = 1).value == None and maxrow[1-n] != i:
             return i
     return 0
@@ -172,9 +172,9 @@ def nextperson(n):
     sheet.cell(row=maxrow[n], column=1, value=name)
     for i in range(5):
         if isNum(time[n][i]):
-            sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
+            sheet.cell(row=maxrow[n], column=i + 2, value=float(time[n][i]))
         else:
-            sheet.cell(row=maxrow[n] + 1, column=i + 2, value=time[n][i])
+            sheet.cell(row=maxrow[n], column=i + 2, value=time[n][i])
     sheet.cell(row=maxrow[n], column=7, value=average)
 
     wb.save(workbook)
@@ -422,10 +422,10 @@ t51box.grid(row=5, column=4, padx=5, pady=5)
 t51entbutton = tkinter.Button(root, text='Save', command=lambda :timeinput(4, 1))
 t51entbutton.grid(row=5, column=5, padx=5, pady=5)
 
-resetbutton0 = tkinter.Button(root, text='Next Person', command=lambda :nextperson(0))
+resetbutton0 = tkinter.Button(root, text='Confirm', command=lambda :nextperson(0))
 resetbutton0.grid(row=6, column=0, columnspan=3, sticky=tkinter.W+tkinter.E)
 
-resetbutton1 = tkinter.Button(root, text='Next Person', command=lambda :nextperson(0))
+resetbutton1 = tkinter.Button(root, text='Confirm', command=lambda :nextperson(0))
 resetbutton1.grid(row=6, column=3, columnspan=3, sticky=tkinter.W+tkinter.E)
 
 root.after(1,inputserial)
