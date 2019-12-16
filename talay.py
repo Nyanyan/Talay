@@ -15,9 +15,11 @@ def search_com_port():
     return use_port
 
 def findmaxrow(n):
-    for i in range(1, sheet.max_row + 1):
-        if sheet.cell(row = i, column = 1).value == None and maxrow[1-n] != i - 1:
-            return i - 1
+    global maxrow
+    for i in range(maxrow[n], sheet.max_row + 1):
+        if sheet.cell(row = i, column = 1).value == None and maxrow[1-n] != i:
+            return i
+    return 0
 
 def isNum(string):
     arr = ['0','1','2','3','4','5','6','7','8','9','.']
@@ -31,14 +33,10 @@ def nameinput(n):
     global maxrow
     row = 0
     if n == 0:
-        row = maxrow[0]
-    else:
-        row = maxrow[1]
-    if n == 0:
         name = name0box.get()
     else:
         name = name1box.get()
-    sheet.cell(row=row, column=1, value=name)
+    sheet.cell(row=maxrow[n], column=1, value=name)
     if n == 0:
         name0box.config(state = 'disable')
         name0entbutton.config(state = 'disable')
@@ -171,13 +169,13 @@ def nextperson(n):
     else:
         average = 'DNF'
 
-    sheet.cell(row=maxrow[n] + 1, column=1, value=name)
+    sheet.cell(row=maxrow[n], column=1, value=name)
     for i in range(5):
         if isNum(time[n][i]):
             sheet.cell(row=maxrow[n] + 1, column=i + 2, value=float(time[n][i]))
         else:
             sheet.cell(row=maxrow[n] + 1, column=i + 2, value=time[n][i])
-    sheet.cell(row=maxrow[n] + 1, column=7, value=average)
+    sheet.cell(row=maxrow[n], column=7, value=average)
 
     wb.save(workbook)
 
@@ -322,7 +320,7 @@ port = search_com_port()
 workbook = 'test.xlsx'
 wb = openpyxl.load_workbook(workbook)
 sheet = wb['Sheet1']
-maxrow = [-1,-1]
+maxrow = [0, 0]
 maxrow[0] = findmaxrow(0)
 maxrow[1] = findmaxrow(1)
 #print(maxrow)

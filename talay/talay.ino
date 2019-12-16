@@ -67,11 +67,11 @@ void mainprocessing(int num, String input) {
     if (char(checksum) == input[7]) {
       //f = false;
       flag[num] = false;
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 50; i++) {
         Serial.print(char(48 + num));
         Serial.print(char(48 + i));
         Serial.println(input);
-        delay(5);
+        delay(10);
         if (Serial.available() > 0) {
           if (char(Serial.read()) == 'y')
             break;
