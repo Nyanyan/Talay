@@ -38,13 +38,13 @@ void loop() {
   //Serial.println(digitalRead(3));
   String serialinput[2] = {"", ""};
   serial0.listen();
-  delay(200);
-  serialinput[0] = serial0.readStringUntil(char(13));
+  delay(100);
+  serialinput[0] = serial0.readStringUntil('\n');
   serial1.listen();
-  delay(200);
-  serialinput[1] = serial1.readStringUntil(char(13));
-  mainprocessing(0, serialinput[0]);
-  mainprocessing(1, serialinput[1]);
+  delay(100);
+  serialinput[1] = serial1.readStringUntil('\n');
+  for (int i = 0; i < 2; i++)
+    mainprocessing(i, serialinput[i]);
   /*
     serial2.listen();
     mainprocessing(2, serial2.readStringUntil(char(10)));
@@ -66,7 +66,6 @@ void loop() {
 }
 
 void mainprocessing(int num, String input) {
-  //bool f = true;
   String inputproc = "";
   int tmp = input.length();
   for (int i = max(0, tmp - 8); i < tmp; i++)
@@ -78,7 +77,6 @@ void mainprocessing(int num, String input) {
       for (int i = 0; i < 6; i++)
         checksum += int(inputproc[i + 1]) - 48;
       if (char(checksum) == inputproc[7]) {
-        //f = false;
         bool tmp2 = false;
         for (int i = 0; i < 20; i++) {
           Serial.print(char(48 + num));
@@ -96,8 +94,4 @@ void mainprocessing(int num, String input) {
     } else if (input[0] == ' ' || input[0] == 'I' || input[0] == 'R' || input[0] == 'L' || input[0] == 'A')
       flag[num] = true;
   }
-  /*
-    if (f)
-      Serial.println(num);
-  */
 }
