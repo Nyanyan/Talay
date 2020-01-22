@@ -124,29 +124,31 @@ def confirmtime():
 
 def nextperson(n):
     global maxrow, time, turn
-
+    name = ''
     if n == 0:
+        name = name0box.get()
         time[0][0] = t10box.get()
         time[0][1] = t20box.get()
         time[0][2] = t30box.get()
         time[0][3] = t40box.get()
         time[0][4] = t50box.get()
-        name = name0box.get()
     else:
+        name = name1box.get()
         time[1][0] = t11box.get()
         time[1][1] = t21box.get()
         time[1][2] = t31box.get()
         time[1][3] = t41box.get()
         time[1][4] = t51box.get()
-        name = name1box.get()
-
+    print(name)
     flag = False
     if name == '':
         flag = True
+        print("Name Error")
     else:
         for i in range(5):
             if time[n][i] == '':
                 flag = True
+                print("Time Error")
                 break
     if flag:
         warning = tkinter.Tk()
@@ -171,6 +173,11 @@ def nextperson(n):
         average = round((sum(tim) - min(tim)) / 3, 3)
     else:
         average = 'DNF'
+    
+    if maxrow[n] > maxrow[1 - n]:
+        maxrow[n], maxrow[1 - n] = maxrow[1 - n], maxrow[n]
+    
+    print(maxrow, n)
 
     sheet.cell(row=maxrow[n], column=1, value=name)
     for i in range(5):
@@ -428,7 +435,7 @@ t51entbutton.grid(row=5, column=5, padx=5, pady=5)
 resetbutton0 = tkinter.Button(root, text='Confirm', command=lambda :nextperson(0))
 resetbutton0.grid(row=6, column=0, columnspan=3, sticky=tkinter.W+tkinter.E)
 
-resetbutton1 = tkinter.Button(root, text='Confirm', command=lambda :nextperson(0))
+resetbutton1 = tkinter.Button(root, text='Confirm', command=lambda :nextperson(1))
 resetbutton1.grid(row=6, column=3, columnspan=3, sticky=tkinter.W+tkinter.E)
 
 root.after(1,inputserial)
